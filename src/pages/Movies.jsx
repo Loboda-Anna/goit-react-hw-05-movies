@@ -1,37 +1,38 @@
-import React, { useState, useEffect } from 'react';
-import { Route, Routes, Link } from 'react-router-dom';
+import React, { useState, useEffect, lazy } from 'react';
+import { useSearchParams } from 'react-router-dom';
+import { getMoviesByName } from 'servicies/getMovies';
 
-import { getMovieByName } from 'servicies/getMovies';
-import Home from './Home';
+const MoviesList = lazy(() => import('components/MoviesList'));
+const SearchBar = lazy(() => import('components/SearchBar'));
 
-import SearchBar from 'components/SearchBar';
-import MovieInfo from 'components/MovieDetails';
+const Movies = () => {
+  const [movies, setMovies] = useState(null);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const query = searchParams.get('query') ?? '';
 
-export default function Movies({ movieid }) {
-  //   const [movie, setMovie] = useState();
-  // useEffect(() => {
-  //   const getMovieByName = async name => {
-  //     try {
-  //       const response = await getMovieByName(name);
-  //       setMovie(response);
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   };
-  //   getMovieByName();
-  // }, [movieTitle]);
-  //   const renderMovieByName = async name => {
-  //     try {
-  //       const response = await getMovieByName(name);
-  //       console.log(response);
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   };
+  const updateQueryString = query => {
+    const nextParams = query !== '' ? { query } : {};
+    setSearchParams(nextParams);
+  };
 
+  useEffect(() => {
+    const getMoviesList = async searchQuery => {
+      try {
+        const response = await getMoviesByName(query);
+        if (response.length > 0) {
+          setMovies(response);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getMoviesList(query);
+  }, [query]);
   return (
     <div>
-      <SearchBar />
+      <SearchBar onSubmit={updateQueryString} />
+      {movies && <MoviesList movies={movies} />}
     </div>
   );
-}
+};
+export default Movies;

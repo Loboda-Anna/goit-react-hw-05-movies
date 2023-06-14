@@ -1,10 +1,12 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { getTrending } from 'servicies/getMovies';
 
-export default function Home() {
+const Home = () => {
   const [movies, setMovies] = useState([]);
+  const location = useLocation();
+
   useEffect(() => {
     const getTrendMovies = async () => {
       try {
@@ -17,12 +19,20 @@ export default function Home() {
     getTrendMovies();
   }, []);
   return (
-    <ul>
-      {movies.map(movie => (
-        <li key={movie.id}>
-          <Link to={`movies/${movie.id}`}>{movie.title}</Link>
-        </li>
-      ))}
-    </ul>
+    movies && (
+      <div>
+        <h1>Trending today</h1>
+        <ul>
+          {movies.map(movie => (
+            <li key={movie.id}>
+              <Link to={`movies/${movie.id}`} state={{ from: location }}>
+                {movie.title}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </div>
+    )
   );
-}
+};
+export default Home;

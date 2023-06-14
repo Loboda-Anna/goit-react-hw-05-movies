@@ -1,14 +1,18 @@
 import React from 'react';
-import { Outlet } from 'react-router-dom';
 
-export default function SearchBar() {
+export default function SearchBar({ onSubmit }) {
+  const handleSubmit = e => {
+    e.preventDefault();
+    const inputValue = e.target.search.value;
+    onSubmit(inputValue);
+    console.log(inputValue);
+  };
   return (
     <div>
-      SearchBar <Outlet />
-      {/* <form onSubmit={e => renderMovieByName(e.target.value)}>
-        <input type="text" />
-        <button type="submit"></button>
-      </form> */}
+      <form onSubmit={handleSubmit}>
+        <input type="text" name="search" />
+        <button type="submit">Search</button>
+      </form>
     </div>
   );
 }
