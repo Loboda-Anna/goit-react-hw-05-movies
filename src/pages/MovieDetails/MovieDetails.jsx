@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Link, Outlet, useLocation } from 'react-router-dom';
 import { getMovieById } from 'servicies/getMovies';
-import Cast from '../Cast/Cast';
-import Reviews from '../Reviews';
+import Cast from '../../components/Cast/Cast';
+import Reviews from '../../components/Reviews';
 import defaultPoster from 'images/defaultPoster.jpg';
 import { BackBtn, MovieCard, AdditionalInfo } from './MovieDetails.styled';
 

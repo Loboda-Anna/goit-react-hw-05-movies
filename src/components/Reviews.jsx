@@ -1,3 +1,4 @@
+import NotFound from 'pages/NotFound';
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { getReviews } from 'servicies/getMovies';
@@ -21,8 +22,8 @@ const Reviews = () => {
   }, [movieId]);
   console.log(reviews);
   return (
-    reviews && (
-      <div>
+    <div>
+      {reviews ? (
         <ul>
           {reviews.map(review => (
             <li key={review.id}>
@@ -31,8 +32,11 @@ const Reviews = () => {
             </li>
           ))}
         </ul>
-      </div>
-    )
+      ) : (
+        <NotFound />
+      )}
+    </div>
   );
 };
 export default Reviews;
+
